@@ -6,6 +6,7 @@ import { HealthCenterModule } from './modules/health-center/health-center.module
 import { AppointmentModule } from './modules/appointment/appointment.module';
 import { WhatsappService } from './services/whatsapp/whatsapp.service';
 import { MercadoPagoService } from './services/mercado-pago/mercado-pago.service';
+import { MyLogger } from './modules/logger';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { MercadoPagoService } from './services/mercado-pago/mercado-pago.service
     AppointmentModule,
   ],
   controllers: [],
-  providers: [WhatsappService, MercadoPagoService],
+  providers: [MyLogger, WhatsappService, MercadoPagoService],
 })
 export class AppModule {}
