@@ -1,28 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Client, LocalAuth } from 'whatsapp-web.js';
 import { MyLogger } from './modules/logger';
+import client from './services/whatsapp/whatsapp';
+import { WhatsappService } from './services/whatsapp/whatsapp.service';
 
 async function bootstrap() {
   const logger = new MyLogger();
-  const client = new Client({
-    puppeteer: {
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    },
-    authStrategy: new LocalAuth({ dataPath: './whatsAppSession' }),
-  });
-  client.on('qr', (qr) => {
-    logger.log(`QR RECEIVED, ${qr}`, 'Main');
+  const app = await NestFactory.create(AppModule);
+  const whatsappService = app.get(WhatsappService);
+
+  client.on('ready', async () => {
+    logger.log('Client is ready!', 'Main');
+    whatsappService.sendMessage(client, '5493804316087@c.us', 'Hello world!');
+    await app.listen(3000);
   });
 
   client.on('message', (message) => {
-    console.log('message:', JSON.stringify(message));
-    console.log(message.body);
+    whatsappService.processMessage(message);
   });
-
-  client.initialize();
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
 }
 bootstrap();

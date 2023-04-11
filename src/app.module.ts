@@ -7,6 +7,7 @@ import { AppointmentModule } from './modules/appointment/appointment.module';
 import { WhatsappService } from './services/whatsapp/whatsapp.service';
 import { MercadoPagoService } from './services/mercado-pago/mercado-pago.service';
 import { MyLogger } from './modules/logger';
+import { Client } from 'whatsapp-web.js';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { MyLogger } from './modules/logger';
     AppointmentModule,
   ],
   controllers: [],
-  providers: [MyLogger, WhatsappService, MercadoPagoService],
+  providers: [MyLogger, WhatsappService, Client, MercadoPagoService],
 })
 export class AppModule {}
