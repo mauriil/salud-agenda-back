@@ -5,9 +5,9 @@ import client from '../../services/whatsapp/whatsapp';
 const logger = new MyLogger();
 @Injectable()
 export class WhatsappService {
-  sendMessage(chatId: string, message: string) {
+  sendMessage(phoneNumber: string, message: string) {
     try {
-      client.sendMessage(chatId, message);
+      client.sendMessage(`${phoneNumber}@c.us`, message);
     } catch (error) {
       logger.error(error, 'WhatsappService');
     }
