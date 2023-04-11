@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { MyLogger } from 'src/modules/logger';
-import { Client, Message } from 'whatsapp-web.js';
+import { Message } from 'whatsapp-web.js';
+import client from '../../services/whatsapp/whatsapp';
 const logger = new MyLogger();
 @Injectable()
 export class WhatsappService {
-  sendMessage(client: Client, chatId: string, message: string) {
+  sendMessage(chatId: string, message: string) {
     try {
       client.sendMessage(chatId, message);
     } catch (error) {

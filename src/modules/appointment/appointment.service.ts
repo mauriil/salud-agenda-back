@@ -2,14 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { WhatsappService } from 'src/services/whatsapp/whatsapp.service';
-import client from '../../services/whatsapp/whatsapp';
 
 @Injectable()
 export class AppointmentService {
   constructor(private whatsappService: WhatsappService) {}
   create(createAppointmentDto: CreateAppointmentDto) {
     this.whatsappService.sendMessage(
-      client,
       '5493804316087@c.us',
       'Hello world from service',
     );

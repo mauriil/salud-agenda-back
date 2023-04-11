@@ -11,7 +11,7 @@ async function bootstrap() {
 
   client.on('ready', async () => {
     logger.log('Client is ready!', 'Main');
-    whatsappService.sendMessage(client, '5493804316087@c.us', 'Hello world!');
+    whatsappService.sendMessage('5493804316087@c.us', 'Hello world!');
     await app.listen(3000);
   });
 
