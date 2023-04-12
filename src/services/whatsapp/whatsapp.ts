@@ -7,7 +7,7 @@ const client = new Client({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   },
-  authStrategy: new LocalAuth({ dataPath: './whatsAppSession' }),
+  authStrategy: new LocalAuth({ dataPath: '@whatsAppSession' }),
 });
 client.on('qr', (qr) => {
   // TODO: Send QR via email or SMS

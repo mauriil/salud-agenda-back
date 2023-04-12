@@ -1,0 +1,37 @@
+2023/04/12-14:43:21.659 f503 Creating DB /Users/mauriciolahitte/Documents/SaludAgenda/salud-agenda-back/@whatsAppSession/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb since it was missing.
+2023/04/12-14:43:21.669 f503 Reusing MANIFEST /Users/mauriciolahitte/Documents/SaludAgenda/salud-agenda-back/@whatsAppSession/session/Default/IndexedDB/https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2023/04/12-14:43:21.730 8303 Level-0 table #5: started
+2023/04/12-14:43:21.734 8303 Level-0 table #5: 7374 bytes OK
+2023/04/12-14:43:21.744 8303 Delete type=0 #3
+2023/04/12-14:43:21.744 8303 Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)
+2023/04/12-14:44:18.016 9f07 Level-0 table #7: started
+2023/04/12-14:44:18.033 9f07 Level-0 table #7: 1075765 bytes OK
+2023/04/12-14:44:18.043 9f07 Delete type=0 #4
+2023/04/12-14:44:21.138 1f147 Level-0 table #9: started
+2023/04/12-14:44:21.160 1f147 Level-0 table #9: 1115196 bytes OK
+2023/04/12-14:44:21.168 1f147 Delete type=0 #6
+2023/04/12-14:44:21.171 1f147 Compacting 1@0 + 1@1 files
+2023/04/12-14:44:21.217 1f147 Generated table #10@0: 45245 keys, 1487345 bytes
+2023/04/12-14:44:21.217 1f147 Compacted 1@0 + 1@1 files => 1487345 bytes
+2023/04/12-14:44:21.225 1f147 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/04/12-14:44:22.395 11737 Level-0 table #12: started
+2023/04/12-14:44:22.412 11737 Level-0 table #12: 1067449 bytes OK
+2023/04/12-14:44:22.420 11737 Delete type=2 #7
+2023/04/12-14:44:22.420 11737 Delete type=2 #9
+2023/04/12-14:44:22.420 11737 Delete type=0 #8
+2023/04/12-14:44:22.422 11737 Compacting 1@0 + 1@1 files
+2023/04/12-14:44:22.489 11737 Generated table #13@0: 68194 keys, 2188633 bytes
+2023/04/12-14:44:22.489 11737 Compacted 1@0 + 1@1 files => 2188633 bytes
+2023/04/12-14:44:22.493 11737 compacted to: files[ 0 1 1 0 0 0 0 ]
+2023/04/12-14:44:28.707 11737 Level-0 table #15: started
+2023/04/12-14:44:28.730 11737 Level-0 table #15: 995055 bytes OK
+2023/04/12-14:44:28.736 11737 Delete type=0 #11
+2023/04/12-14:44:28.736 11737 Delete type=2 #12
+2023/04/12-14:44:28.736 11737 Delete type=2 #10
+2023/04/12-14:44:29.128 1f147 Compacting 1@0 + 1@1 files
+2023/04/12-14:44:29.205 1f147 Generated table #16@0: 80550 keys, 2270262 bytes
+2023/04/12-14:44:29.220 1f147 Generated table #17@0: 12325 keys, 401593 bytes
+2023/04/12-14:44:29.220 1f147 Compacted 1@0 + 1@1 files => 2671855 bytes
+2023/04/12-14:44:29.228 1f147 compacted to: files[ 0 2 1 0 0 0 0 ]
+2023/04/12-14:44:29.228 1f147 Delete type=2 #15
+2023/04/12-14:44:29.228 1f147 Delete type=2 #13
