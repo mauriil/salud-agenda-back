@@ -9,6 +9,8 @@ import { MercadoPagoService } from './services/mercado-pago/mercado-pago.service
 import { MyLogger } from './modules/logger';
 import { Client } from 'whatsapp-web.js';
 import { GoogleModule } from './google/google.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { GoogleModule } from './google/google.module';
     HealthCenterModule,
     AppointmentModule,
     GoogleModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [MyLogger, WhatsappService, Client, MercadoPagoService],
