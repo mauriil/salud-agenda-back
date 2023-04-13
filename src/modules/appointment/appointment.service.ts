@@ -4,6 +4,7 @@ import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { WhatsappService } from 'src/services/whatsapp/whatsapp.service';
 import { GoogleCalendarService } from 'src/services/google/google-calendar.service';
 import { MyLogger } from '../logger';
+import { MercadoPagoService } from 'src/services/mercado-pago/mercado-pago.service';
 const logger = new MyLogger();
 
 @Injectable()
@@ -11,6 +12,7 @@ export class AppointmentService {
   constructor(
     private whatsappService: WhatsappService,
     private readonly calendarService: GoogleCalendarService,
+    private readonly mercadoPagoService: MercadoPagoService,
   ) {}
 
   async create(createAppointmentDto: CreateAppointmentDto) {
@@ -27,10 +29,15 @@ export class AppointmentService {
         '1//0f_xl5ZsnSe9NCgYIARAAGA8SNwF-L9IrUEoa92jHqRiMSapyCXH9J9TbIx68dngdVsOQBJ4HZd6opMGAcfmaDjS5AXtHAMI8xbw',
       );
       this.whatsappService.sendMessage(
-        '5493804252022',
+        '5493804316087',
         'Hello world from service',
       );
-      return { message: 'Event created successfully', event };
+      const paymentLink = await this.mercadoPagoService.createPaymentLink({
+        id: '123',
+        email: 'gabriela.mercedes8@gmail.com',
+        amount: 100,
+      });
+      return { message: 'Event created successfully', event, paymentLink };
     } catch (error) {
       logger.error(error, 'AppointmentService');
     }
