@@ -15,17 +15,12 @@ export const UserSchema = new mongoose.Schema(
       type: String,
       unique: true,
     },
+    google: {
+      access_token: String,
+      refresh_token: String,
+    },
   },
   { timestamps: true, collection: 'users' },
 )
   .post('save', handleE11000)
   .index({ email: 1 }, { unique: true });
-
-export interface User extends mongoose.Document {
-  id: string;
-  name: string;
-  password: string;
-  email: string;
-  createdAt: Date;
-  updatedAt: Date;
-}

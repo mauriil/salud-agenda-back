@@ -1,4 +1,4 @@
-import { HttpException, Injectable, UseFilters } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './users.types';
@@ -20,11 +20,11 @@ export class UsersService {
     }
   }
 
-  retrieveUserById(userId: string): Partial<User> {
+  async retrieveUserById(userId: string): Promise<Partial<User>> {
     try {
-      return this.userModel
+      return (await this.userModel
         .findById(userId)
-        .select('-password') as Partial<User>;
+        .select('-password')) as Partial<User>;
     } catch (error) {
       this.logger.error(error);
       throw new HttpException('Something went wrong', 422);
@@ -33,10 +33,7 @@ export class UsersService {
 
   createUser(newUser: User): Promise<User> {
     try {
-      this.logger.log(JSON.stringify(newUser), 'createUser');
-      const user = this.userModel.create(newUser);
-      this.logger.log(JSON.stringify(user), 'created createUser');
-      return user;
+      return this.userModel.create(newUser);
     } catch (error) {
       this.logger.error(error);
       throw new HttpException('Something went wrong', 422);
@@ -45,5 +42,22 @@ export class UsersService {
 
   deleteUser() {
     return 'deleteUser';
+  }
+
+  async updateOneUser(
+    userId: string,
+    newUserData: Partial<User>,
+  ): Promise<Partial<User>> {
+    try {
+      const userExists = await this.retrieveUserById(userId);
+      if (!userExists) throw new HttpException('User not found', 400);
+
+      return (await this.userModel
+        .findOneAndUpdate({ _id: userId }, { $set: newUserData }, { new: true })
+        .select('-password')) as Partial<User>;
+    } catch (error) {
+      this.logger.error(error);
+      throw new HttpException('Something went wrong', 422);
+    }
   }
 }
