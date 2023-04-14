@@ -14,6 +14,8 @@ export class GoogleCalendarService {
 
   async createEvent(
     summary: string,
+    description: string,
+    location: string,
     patientEmail: string,
     doctorEmail: string,
     start: string,
@@ -42,9 +44,8 @@ export class GoogleCalendarService {
         auth: oauth2Client,
         requestBody: {
           summary,
-          location: '800 Howard St., San Francisco, CA 94103',
-          description:
-            "A chance to hear more about Google's developer products.",
+          location,
+          description,
           start: {
             dateTime: start,
             timeZone: 'America/Argentina/Buenos_Aires',
@@ -66,7 +67,6 @@ export class GoogleCalendarService {
       };
 
       const response = await calendar.events.insert(event);
-      logger.log(response.data, 'GoogleCalendarService [RESPONSE]');
       return response.data;
     } catch (error) {
       logger.error(error, 'GoogleCalendarService');

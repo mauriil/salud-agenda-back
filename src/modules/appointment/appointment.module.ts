@@ -6,8 +6,11 @@ import { Client } from 'whatsapp-web.js';
 import { GoogleCalendarService } from 'src/services/google/google-calendar.service';
 import { GoogleAuthService } from 'src/services/google/google-auth.service';
 import { MercadoPagoService } from 'src/services/mercado-pago/mercado-pago.service';
+import { MyLogger } from '../logger';
+import { UsersModule } from '../users/users.module';
 
 @Module({
+  imports: [UsersModule],
   controllers: [AppointmentController],
   providers: [
     AppointmentService,
@@ -16,6 +19,7 @@ import { MercadoPagoService } from 'src/services/mercado-pago/mercado-pago.servi
     GoogleCalendarService,
     GoogleAuthService,
     MercadoPagoService,
+    MyLogger,
   ],
 })
 export class AppointmentModule {}

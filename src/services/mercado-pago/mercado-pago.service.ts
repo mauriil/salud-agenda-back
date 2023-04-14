@@ -13,12 +13,12 @@ export class MercadoPagoService {
   }
 
   async createPaymentLink(datosPago: any): Promise<PreferenceGetResponse> {
-    const { id, email, amount } = datosPago;
+    const { id, email, amount, title } = datosPago;
 
     const preference: CreatePreferencePayload = {
       items: [
         {
-          title: 'Producto',
+          title,
           quantity: 1,
           currency_id: 'ARS',
           unit_price: parseFloat(amount),
