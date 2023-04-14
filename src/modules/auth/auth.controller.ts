@@ -5,8 +5,8 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { loginUserDto, newUserDto } from 'src/users/users.dto';
-import { User, UserLogin } from 'src/users/users.types';
+import { loginUserDto, newUserDto } from 'src/modules/users/users.dto';
+import { User, UserLogin } from 'src/modules/users/users.types';
 import { AuthService } from './auth.service';
 
 @ApiTags('users')

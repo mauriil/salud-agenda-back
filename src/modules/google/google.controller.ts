@@ -1,5 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { GoogleAuthService } from '../services/google/google-auth.service';
+import { GoogleAuthService } from '../../services/google/google-auth.service';
 
 @Controller('auth/google')
 export class GoogleController {

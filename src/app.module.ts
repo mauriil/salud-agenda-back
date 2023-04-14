@@ -8,9 +8,9 @@ import { WhatsappService } from './services/whatsapp/whatsapp.service';
 import { MercadoPagoService } from './services/mercado-pago/mercado-pago.service';
 import { MyLogger } from './modules/logger';
 import { Client } from 'whatsapp-web.js';
-import { GoogleModule } from './google/google.module';
-import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
+import { GoogleModule } from './modules/google/google.module';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [

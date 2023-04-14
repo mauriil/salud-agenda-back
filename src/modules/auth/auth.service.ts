@@ -2,8 +2,8 @@ import { ForbiddenException, HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { hash, verify } from 'argon2';
 import { MyLogger } from 'src/modules/logger';
-import { UsersService } from 'src/users/users.service';
-import { User } from 'src/users/users.types';
+import { UsersService } from 'src/modules/users/users.service';
+import { User } from 'src/modules/users/users.types';
 
 @Injectable()
 export class AuthService {
