@@ -6,6 +6,7 @@ import { GoogleCalendarService } from 'src/services/google/google-calendar.servi
 import { MyLogger } from '../logger';
 import { MercadoPagoService } from 'src/services/mercado-pago/mercado-pago.service';
 import { UsersService } from '../users/users.service';
+import { HealthCenterService } from '../health-center/health-center.service';
 
 @Injectable()
 export class AppointmentService {
@@ -15,6 +16,7 @@ export class AppointmentService {
     private readonly mercadoPagoService: MercadoPagoService,
     private readonly logger: MyLogger,
     private readonly userService: UsersService,
+    private readonly healthCenterService: HealthCenterService,
   ) {}
 
   async create(createAppointmentDto: CreateAppointmentDto) {
@@ -22,7 +24,9 @@ export class AppointmentService {
       createAppointmentDto.userId,
     );
     if (!user) throw new HttpException('User not found', 400);
-    // TODO: traer datos del health center para colocar la direccion en el createEvent
+    const healthCenter = await this.healthCenterService.findOneByUserId(
+      createAppointmentDto.userId,
+    );
     // TODO: traer datos del paciente para colocar el nombre en el createEvent y el email en el attendee y telefono para el whatsapp
     try {
       const event = await this.calendarService.createEvent(
@@ -32,7 +36,7 @@ export class AppointmentService {
         createAppointmentDto.description
           ? createAppointmentDto.description
           : `Cita con tu profesional ${user.name}}`,
-        '800 Howard St., San Francisco, CA 94103',
+        healthCenter.location,
         'mauricio@gogrow.dev',
         user.email,
         createAppointmentDto.startTimestamp,

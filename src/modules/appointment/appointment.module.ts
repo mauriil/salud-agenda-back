@@ -8,6 +8,7 @@ import { GoogleAuthService } from 'src/services/google/google-auth.service';
 import { MercadoPagoService } from 'src/services/mercado-pago/mercado-pago.service';
 import { MyLogger } from '../logger';
 import { UsersModule } from '../users/users.module';
+import { HealthCenterService } from '../health-center/health-center.service';
 
 @Module({
   imports: [UsersModule],
@@ -20,6 +21,7 @@ import { UsersModule } from '../users/users.module';
     GoogleAuthService,
     MercadoPagoService,
     MyLogger,
+    HealthCenterService,
   ],
 })
 export class AppointmentModule {}

@@ -35,8 +35,12 @@ export class HealthCenterService {
     return `This action returns all healthCenter`;
   }
 
-  findOne(id: number) {
+  findOneById(id: number) {
     return `This action returns a #${id} healthCenter`;
+  }
+
+  async findOneByUserId(userId: string) {
+    return await this.healthCenterModel.findOne({ userId });
   }
 
   update(id: number, updateHealthCenterDto: UpdateHealthCenterDto) {
