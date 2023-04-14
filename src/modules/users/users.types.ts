@@ -3,7 +3,7 @@ interface googleCredentials {
   refresh_token: string;
 }
 export interface User {
-  id: string;
+  _id: string;
   name: string;
   password: string;
   email: string;

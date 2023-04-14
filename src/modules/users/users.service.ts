@@ -3,12 +3,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './users.types';
 import { MyLogger } from 'src/modules/logger';
+import { HealthCenterService } from '../health-center/health-center.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
     private readonly logger: MyLogger,
+    private readonly healthCenterService: HealthCenterService,
   ) {}
 
   retrieveUserByMail(email: string) {
@@ -31,9 +33,11 @@ export class UsersService {
     }
   }
 
-  createUser(newUser: User): Promise<User> {
+  async createUser(newUser: User): Promise<User> {
     try {
-      return this.userModel.create(newUser);
+      const createdUser: User = await this.userModel.create(newUser);
+      await this.healthCenterService.create({ userId: createdUser._id });
+      return createdUser;
     } catch (error) {
       this.logger.error(error);
       throw new HttpException('Something went wrong', 422);
