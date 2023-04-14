@@ -27,7 +27,7 @@ export class HealthCenterController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.healthCenterService.findOne(+id);
+    return this.healthCenterService.findOneById(+id);
   }
 
   @Patch(':id')
