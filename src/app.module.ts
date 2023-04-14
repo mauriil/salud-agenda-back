@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ModulesModule } from './modules/modules.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { HealthCenterModule } from './modules/health-center/health-center.module';
 import { AppointmentModule } from './modules/appointment/appointment.module';
 import { WhatsappService } from './services/whatsapp/whatsapp.service';
 import { MercadoPagoService } from './services/mercado-pago/mercado-pago.service';
@@ -11,17 +9,22 @@ import { Client } from 'whatsapp-web.js';
 import { GoogleModule } from './modules/google/google.module';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { PatientsModule } from './modules/patients/patients.module';
+import { HealthCenterModule } from './modules/health-center/health-center.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    ModulesModule,
-    MongooseModule.forRoot(process.env.MONGO_URI),
-    HealthCenterModule,
+    MongooseModule.forRootAsync({
+      useFactory: () => ({ uri: process.env.MONGO_URI }),
+    }),
     AppointmentModule,
     GoogleModule,
     UsersModule,
     AuthModule,
+    AppointmentModule,
+    HealthCenterModule,
+    PatientsModule,
   ],
   controllers: [],
   providers: [MyLogger, WhatsappService, Client, MercadoPagoService],

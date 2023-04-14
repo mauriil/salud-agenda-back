@@ -7,6 +7,7 @@ import { MyLogger } from '../logger';
 import { MercadoPagoService } from 'src/services/mercado-pago/mercado-pago.service';
 import { UsersService } from '../users/users.service';
 import { HealthCenterService } from '../health-center/health-center.service';
+import { PatientsService } from '../patients/patients.service';
 
 @Injectable()
 export class AppointmentService {
@@ -17,6 +18,7 @@ export class AppointmentService {
     private readonly logger: MyLogger,
     private readonly userService: UsersService,
     private readonly healthCenterService: HealthCenterService,
+    private readonly patientService: PatientsService,
   ) {}
 
   async create(createAppointmentDto: CreateAppointmentDto) {
@@ -24,6 +26,10 @@ export class AppointmentService {
       createAppointmentDto.userId,
     );
     if (!user) throw new HttpException('User not found', 400);
+    const patient = await this.patientService.findOneById(
+      createAppointmentDto.patientId,
+    );
+    if (!patient) throw new HttpException('Patient not found', 400);
     const healthCenter = await this.healthCenterService.findOneByUserId(
       createAppointmentDto.userId,
     );
@@ -37,7 +43,7 @@ export class AppointmentService {
           ? createAppointmentDto.description
           : `Cita con tu profesional ${user.name}}`,
         healthCenter.location,
-        'mauricio@gogrow.dev',
+        patient.email,
         user.email,
         createAppointmentDto.startTimestamp,
         createAppointmentDto.stopTimestamp,
@@ -45,17 +51,17 @@ export class AppointmentService {
         user.google.refresh_token,
       );
       this.whatsappService.sendMessage(
-        '5492942522867',
+        patient.phone,
         'Tu profesional te asignó una nueva cita. Te llegara un mail con la invitacion al evento, aparecerá en tu calendario de Google y enseguida recibiras el link de pago para reservar tu cita por este mismo medio',
       );
       const paymentLink = await this.mercadoPagoService.createPaymentLink({
         id: `${createAppointmentDto.userId}-${createAppointmentDto.patientId}`,
-        email: 'trassaniemmanuel@gmail.com',
+        email: patient.email,
         amount: createAppointmentDto.amount,
         title: createAppointmentDto.title,
       });
       this.whatsappService.sendMessage(
-        '5492942522867',
+        patient.phone,
         `Este es tu link de pago:
         ${paymentLink.body.init_point}
 

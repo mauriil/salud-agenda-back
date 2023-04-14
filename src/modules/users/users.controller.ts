@@ -9,7 +9,7 @@ import { User } from './users.types';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @ApiTags('users')
+  @ApiTags('Users')
   @ApiOkResponse({ type: getUser })
   @UseGuards(JwtAuthGuard)
   @Get(':id')
@@ -17,7 +17,7 @@ export class UsersController {
     return this.usersService.retrieveUserById(id);
   }
 
-  @ApiTags('users')
+  @ApiTags('Users')
   @ApiOkResponse({ type: getUser })
   @UseGuards(JwtAuthGuard)
   @Patch(':id')

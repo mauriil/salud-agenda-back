@@ -9,9 +9,10 @@ import { MercadoPagoService } from 'src/services/mercado-pago/mercado-pago.servi
 import { MyLogger } from '../logger';
 import { UsersModule } from '../users/users.module';
 import { HealthCenterModule } from '../health-center/health-center.module';
+import { PatientsModule } from '../patients/patients.module';
 
 @Module({
-  imports: [UsersModule, HealthCenterModule],
+  imports: [UsersModule, HealthCenterModule, PatientsModule],
   controllers: [AppointmentController],
   providers: [
     AppointmentService,

@@ -9,7 +9,7 @@ import { loginUserDto, newUserDto } from 'src/modules/users/users.dto';
 import { User, UserLogin } from 'src/modules/users/users.types';
 import { AuthService } from './auth.service';
 
-@ApiTags('users')
+@ApiTags('Users')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
