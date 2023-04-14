@@ -11,10 +11,13 @@ export class GoogleController {
   }
 
   @Get('callback')
-  async getTokenFromCode(@Query('code') code: string): Promise<void> {
+  async getTokenFromCode(
+    @Query('code') code: string,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
     const { accessToken, refreshToken } =
       await this.googleAuthService.getTokensFromCode(code);
     console.log('🚀 ~ refreshToken:', refreshToken);
     console.log('🚀 ~ accessToken:', accessToken);
+    return { accessToken, refreshToken };
   }
 }
