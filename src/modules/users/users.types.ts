@@ -1,4 +1,4 @@
-interface googleCredentials {
+export interface googleCredentials {
   access_token: string;
   refresh_token: string;
 }

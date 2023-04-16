@@ -7,6 +7,7 @@ import {
   MinLength,
   IsOptional,
 } from 'class-validator';
+import { googleCredentials } from './users.types';
 
 export class newUserDto {
   @ApiProperty({
@@ -102,6 +103,15 @@ export class getUser {
     description: 'The email of the user',
   })
   public email: string;
+
+  @ApiProperty({
+    example: {
+      access_token: 'exampleaccesstoken',
+      refresh_token: 'examplerefreshtoken',
+    },
+    description: 'The photo of the user',
+  })
+  public google: googleCredentials;
 
   @ApiProperty({ example: 'YYYY-mm-dd THH:MM:ss' })
   public createdAt: Date;

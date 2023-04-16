@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateHealthCenterDto } from './dto/create-health-center.dto';
 import { UpdateHealthCenterDto } from './dto/update-health-center.dto';
 import { MyLogger } from '../logger';
@@ -14,37 +14,55 @@ export class HealthCenterService {
     private readonly logger: MyLogger,
   ) {}
   async create(createHealthCenterDto: CreateHealthCenterDto) {
-    await this.healthCenterModel.create({
-      name: 'Nuevo centro de salud',
-      location: 'Sin definir',
-      photo: '',
-      openTime: {
-        Monday: 'cerrado',
-        Tuesday: 'cerrado',
-        Wednesday: 'cerrado',
-        Thursday: 'cerrado',
-        Friday: 'cerrado',
-        Saturday: 'cerrado',
-        Sunday: 'cerrado',
-      },
-      userId: createHealthCenterDto.userId,
-    });
+    try {
+      await this.healthCenterModel.create({
+        name: 'Nuevo centro de salud',
+        location: 'Sin definir',
+        photo: '',
+        openTime: {
+          Monday: 'cerrado',
+          Tuesday: 'cerrado',
+          Wednesday: 'cerrado',
+          Thursday: 'cerrado',
+          Friday: 'cerrado',
+          Saturday: 'cerrado',
+          Sunday: 'cerrado',
+        },
+        userId: createHealthCenterDto.userId,
+      });
+    } catch (error) {
+      this.logger.error(error);
+      throw new HttpException('Something went wrong', 422);
+    }
   }
 
   findAll() {
     return `This action returns all healthCenter`;
   }
 
-  findOneById(id: number) {
-    return `This action returns a #${id} healthCenter`;
+  async findOneById(id: string) {
+    try {
+      return await this.healthCenterModel.findById(id);
+    } catch (error) {
+      this.logger.error(error);
+      throw new HttpException('Something went wrong', 422);
+    }
   }
 
   async findOneByUserId(userId: string) {
     return await this.healthCenterModel.findOne({ userId });
   }
 
-  update(id: number, updateHealthCenterDto: UpdateHealthCenterDto) {
-    return `This action updates a #${id} healthCenter`;
+  async update(id: string, updateHealthCenterDto: UpdateHealthCenterDto) {
+    try {
+      return await this.healthCenterModel.findByIdAndUpdate(
+        id,
+        updateHealthCenterDto,
+      );
+    } catch (error) {
+      this.logger.error(error);
+      throw new HttpException('Something went wrong', 422);
+    }
   }
 
   remove(id: number) {

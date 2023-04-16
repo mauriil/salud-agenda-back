@@ -22,19 +22,39 @@ export class PatientsService {
     }
   }
 
-  findAll() {
-    return `This action returns all patients`;
+  async findAll(healthCenterId: string) {
+    try {
+      return await this.patientModel.find({ healthCenterId });
+    } catch (error) {
+      this.logger.error(error);
+      throw new HttpException('Something went wrong', 422);
+    }
   }
 
   async findOneById(id: string) {
-    return await this.patientModel.findById(id);
+    try {
+      return await this.patientModel.findById(id);
+    } catch (error) {
+      this.logger.error(error);
+      throw new HttpException('Something went wrong', 422);
+    }
   }
 
-  update(id: number, updatePatientDto: UpdatePatientDto) {
-    return `This action updates a #${id} patient`;
+  async update(id: number, updatePatientDto: UpdatePatientDto) {
+    try {
+      return await this.patientModel.findByIdAndUpdate(id, updatePatientDto);
+    } catch (error) {
+      this.logger.error(error);
+      throw new HttpException('Something went wrong', 422);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} patient`;
+  async remove(id: number) {
+    try {
+      return await this.patientModel.findByIdAndDelete(id);
+    } catch (error) {
+      this.logger.error(error);
+      throw new HttpException('Something went wrong', 422);
+    }
   }
 }
