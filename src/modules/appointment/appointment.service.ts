@@ -33,7 +33,15 @@ export class AppointmentService {
     const healthCenter = await this.healthCenterService.findOneByUserId(
       createAppointmentDto.userId,
     );
-    // TODO: traer datos del paciente para colocar el nombre en el createEvent y el email en el attendee y telefono para el whatsapp
+
+    const date = new Date(createAppointmentDto.startTimestamp);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hour = date.getHours();
+    const minutes = date.getMinutes();
+    const formattedDate = `el dia ${day}/${month}/${year} a las ${hour}:${minutes}`;
+
     try {
       const event = await this.calendarService.createEvent(
         createAppointmentDto.title
@@ -50,9 +58,12 @@ export class AppointmentService {
         user.google.access_token,
         user.google.refresh_token,
       );
+
       this.whatsappService.sendMessage(
         patient.phone,
-        'Tu profesional te asignó una nueva cita. Te llegara un mail con la invitacion al evento, aparecerá en tu calendario de Google y enseguida recibiras el link de pago para reservar tu cita por este mismo medio',
+        `Hola ${patient.name}
+        Tu profesional ${user.name} de ${healthCenter.name} te asignó una nueva cita ${formattedDate}. 
+        Te llegara un mail con la invitacion al evento, aparecerá en tu calendario de Google y enseguida recibiras el link de pago para reservar tu cita por este mismo medio`,
       );
       const paymentLink = await this.mercadoPagoService.createPaymentLink({
         id: `${createAppointmentDto.userId}-${createAppointmentDto.patientId}`,
