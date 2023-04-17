@@ -73,7 +73,7 @@ export class AppointmentService {
       });
       this.whatsappService.sendMessage(
         patient.phone,
-        `Este es tu link de pago:
+        `Tu link de pago está listo:
         ${paymentLink.body.init_point}
 
         Recuerda pagar para reservar tu cita.`,

@@ -11,7 +11,7 @@ import {
 import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwtAuth.guard';
 
 @Controller('appointment')
@@ -40,6 +40,8 @@ export class AppointmentController {
   }
 
   @Patch(':id')
+  @ApiOkResponse()
+  @UseGuards(JwtAuthGuard)
   update(
     @Param('id') id: string,
     @Body() updateAppointmentDto: UpdateAppointmentDto,
@@ -48,6 +50,8 @@ export class AppointmentController {
   }
 
   @Delete(':id')
+  @ApiOkResponse()
+  @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.appointmentService.remove(+id);
   }

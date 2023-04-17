@@ -10,9 +10,18 @@ import { MyLogger } from '../logger';
 import { UsersModule } from '../users/users.module';
 import { HealthCenterModule } from '../health-center/health-center.module';
 import { PatientsModule } from '../patients/patients.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AppointmentSchema } from './appointment.model';
 
 @Module({
-  imports: [UsersModule, HealthCenterModule, PatientsModule],
+  imports: [
+    UsersModule,
+    HealthCenterModule,
+    PatientsModule,
+    MongooseModule.forFeature([
+      { name: 'Appointment', schema: AppointmentSchema },
+    ]),
+  ],
   controllers: [AppointmentController],
   providers: [
     AppointmentService,
