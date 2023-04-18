@@ -1,6 +1,50 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsHexadecimal, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsHexadecimal,
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsString,
+} from 'class-validator';
 
+export class Payment {
+  @ApiProperty({
+    example: "'personal' || 'mercadopago']",
+    description: 'The type of payment',
+  })
+  @IsString()
+  @IsNotEmpty()
+  public type: string;
+
+  @ApiProperty({
+    example: 'false',
+    description: 'If the payment is required to confirm the appointment',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  public payToConfirm: boolean;
+
+  @ApiProperty({
+    example: "'0%' || '50%' || '100%'",
+    description: 'The percentage of the payment that has to be payed',
+  })
+  @IsString()
+  @IsNotEmpty()
+  public hasToPay: string;
+
+  @ApiProperty({
+    example: 'false',
+    description: 'If the payment has been payed',
+  })
+  @IsBoolean()
+  @IsNotEmpty()
+  public payed: boolean;
+
+  public paymentUrl: string;
+
+  public paymentId: string;
+}
 export class CreateAppointmentDto {
   @ApiProperty({
     example: '5f9f1c9c0b9b9c0b9b9c0b9b',
@@ -59,4 +103,17 @@ export class CreateAppointmentDto {
   @IsString()
   @IsNotEmpty()
   public stopTimestamp: string;
+
+  @ApiProperty({
+    example: {
+      type: 'personal',
+      payToConfirm: false,
+      hasToPay: '0%',
+      payed: true,
+    },
+    description: 'The payment object',
+  })
+  @IsNotEmpty()
+  @IsObject()
+  public payment: Payment;
 }

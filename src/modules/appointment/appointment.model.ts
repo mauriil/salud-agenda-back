@@ -10,10 +10,6 @@ export const AppointmentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Patient',
     },
-    healthCenterId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'HealthCenter',
-    },
     title: {
       type: String,
       required: true,
@@ -35,6 +31,32 @@ export const AppointmentSchema = new mongoose.Schema(
     },
     googleEventId: {
       type: String,
+    },
+    payment: {
+      type: {
+        type: String,
+        enum: ['personal', 'mercadopago'],
+        required: true,
+      },
+      payToConfirm: {
+        type: Boolean,
+        default: false,
+      },
+      hasToPay: {
+        type: String,
+        default: '0%',
+        enum: ['0%', '50%', '100%'],
+      },
+      payed: {
+        type: Boolean,
+        default: false,
+      },
+      paymentId: {
+        type: String,
+      },
+      paymentUrl: {
+        type: String,
+      },
     },
   },
   { timestamps: true, collection: 'appointment' },

@@ -8,10 +8,15 @@ import { MercadoPagoService } from 'src/services/mercado-pago/mercado-pago.servi
 import { UsersService } from '../users/users.service';
 import { HealthCenterService } from '../health-center/health-center.service';
 import { PatientsService } from '../patients/patients.service';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Appointment } from './appointment.types';
 
 @Injectable()
 export class AppointmentService {
   constructor(
+    @InjectModel('Appointment')
+    private readonly appointmentModel: Model<Appointment>,
     private whatsappService: WhatsappService,
     private readonly calendarService: GoogleCalendarService,
     private readonly mercadoPagoService: MercadoPagoService,
@@ -43,7 +48,7 @@ export class AppointmentService {
     const formattedDate = `el dia ${day}/${month}/${year} a las ${hour}:${minutes}`;
 
     try {
-      const event = await this.calendarService.createEvent(
+      const googleEvent = await this.calendarService.createEvent(
         createAppointmentDto.title
           ? createAppointmentDto.title
           : 'Salud Agenda Meeting',
@@ -61,26 +66,60 @@ export class AppointmentService {
 
       this.whatsappService.sendMessage(
         patient.phone,
-        `Hola ${patient.name}
-        Tu profesional ${user.name} de ${healthCenter.name} te asignó una nueva cita ${formattedDate}. 
-        Te llegara un mail con la invitacion al evento, aparecerá en tu calendario de Google y enseguida recibiras el link de pago para reservar tu cita por este mismo medio`,
+        `Hola ${patient.name}\nTu profesional ${user.name} de ${healthCenter.name} te asignó una nueva cita ${formattedDate}.\nTe llegara un mail con la invitacion al evento, aparecerá en tu calendario de Google.`,
       );
-      const paymentLink = await this.mercadoPagoService.createPaymentLink({
-        id: `${createAppointmentDto.userId}-${createAppointmentDto.patientId}`,
-        email: patient.email,
-        amount: createAppointmentDto.amount,
-        title: createAppointmentDto.title,
-      });
-      this.whatsappService.sendMessage(
-        patient.phone,
-        `Tu link de pago está listo:
-        ${paymentLink.body.init_point}
 
-        Recuerda pagar para reservar tu cita.`,
+      const newAppointmentObject = {
+        ...createAppointmentDto,
+        googleEventId: googleEvent.id,
+      };
+
+      if (createAppointmentDto.payment.payToConfirm === false) {
+        newAppointmentObject.payment.payed = true;
+      } else {
+        switch (createAppointmentDto.payment.type) {
+          case 'mercadopago':
+            const MPpaymentLink =
+              await this.mercadoPagoService.createPaymentLink({
+                id: `${googleEvent.id}`,
+                email: patient.email,
+                amount:
+                  createAppointmentDto.payment.hasToPay === '50%'
+                    ? createAppointmentDto.amount / 2
+                    : createAppointmentDto.payment.hasToPay === '100%'
+                    ? createAppointmentDto.amount
+                    : 0,
+                title: createAppointmentDto.title,
+              });
+            this.whatsappService.sendMessage(
+              patient.phone,
+              `El pago de la consulta se realizará de manera online, el valor es de $${createAppointmentDto.amount} y deberás abonar el ${createAppointmentDto.payment.hasToPay} mediante este link de pago :\n${MPpaymentLink.body.init_point}\n\nRecuerda pagar para reservar tu cita.`,
+            );
+            newAppointmentObject.payment.paymentUrl =
+              MPpaymentLink.body.init_point;
+            newAppointmentObject.payment.paymentId = MPpaymentLink.response.id;
+            break;
+          case 'personal':
+            this.whatsappService.sendMessage(
+              patient.phone,
+              `Recuerda que el pago de la consulta se realizará de manera presencial. El monto es de $${createAppointmentDto.amount}.`,
+            );
+            break;
+          default:
+            break;
+        }
+      }
+
+      const appointment = await this.appointmentModel.create(
+        newAppointmentObject,
       );
-      return { message: 'Event created successfully', event, paymentLink };
+      return {
+        message: 'Event created successfully',
+        appointment,
+      };
     } catch (error) {
       this.logger.error(error, 'AppointmentService');
+      throw new HttpException(error, 400);
     }
   }
 
