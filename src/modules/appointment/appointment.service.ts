@@ -48,10 +48,12 @@ export class AppointmentService {
     const formattedDate = `el dia ${day}/${month}/${year} a las ${hour}:${minutes}`;
 
     try {
+      const emojiStatus =
+        createAppointmentDto.payment.payToConfirm === false ? '✅' : '⏳';
       const googleEvent = await this.calendarService.createEvent(
         createAppointmentDto.title
-          ? createAppointmentDto.title
-          : 'Salud Agenda Meeting',
+          ? `${emojiStatus} ${createAppointmentDto.title} `
+          : `${emojiStatus} ${healthCenter.name} - ${user.name}`,
         createAppointmentDto.description
           ? createAppointmentDto.description
           : `Cita con tu profesional ${user.name}}`,
