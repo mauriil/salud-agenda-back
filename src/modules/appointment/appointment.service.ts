@@ -126,6 +126,7 @@ export class AppointmentService {
   }
 
   findAll() {
+    this.mercadoPagoService.payToUser('123');
     return `This action returns all appointment`;
   }
 

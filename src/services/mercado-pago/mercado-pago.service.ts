@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as mercadopago from 'mercadopago';
+import { CreatePaymentPayload } from 'mercadopago/models/payment/create-payload.model';
 import { CreatePreferencePayload } from 'mercadopago/models/preferences/create-payload.model';
 import { PreferenceGetResponse } from 'mercadopago/resources/preferences';
 
@@ -38,5 +39,9 @@ export class MercadoPagoService {
     const response = await mercadopago.preferences.create(preference);
     const url = await mercadopago.preferences.get(response.body.id);
     return url;
+  }
+
+  async payToUser(datosPago: any): Promise<void> {
+    //TODO: Ingregrar MODO para hacer una transferencia a la cuenta del profesional
   }
 }
