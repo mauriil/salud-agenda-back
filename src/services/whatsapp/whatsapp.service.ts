@@ -6,6 +6,7 @@ const logger = new MyLogger();
 @Injectable()
 export class WhatsappService {
   sendMessage(phoneNumber: string, message: string) {
+    logger.log(`Sending message to ${phoneNumber}`, 'WhatsappService');
     try {
       client.sendMessage(`${phoneNumber}@c.us`, message);
     } catch (error) {

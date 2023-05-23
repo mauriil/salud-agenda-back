@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import * as mercadopago from 'mercadopago';
 import { CreatePaymentPayload } from 'mercadopago/models/payment/create-payload.model';
 import { CreatePreferencePayload } from 'mercadopago/models/preferences/create-payload.model';
+import { PaymentUpdateResponse } from 'mercadopago/resources/payment';
 import { PreferenceGetResponse } from 'mercadopago/resources/preferences';
 
 @Injectable()
@@ -29,7 +30,7 @@ export class MercadoPagoService {
         email: email,
       },
       back_urls: {
-        success: 'https://www.tu-pagina.com/pago-exitoso',
+        success: `${process.env.NODE_ENV}/appointment/confirm/${id}`,
         failure: 'https://www.tu-pagina.com/pago-fallido',
         pending: 'https://www.tu-pagina.com/pago-pendiente',
       },
@@ -42,6 +43,12 @@ export class MercadoPagoService {
   }
 
   async payToUser(datosPago: any): Promise<void> {
-    //TODO: Ingregrar MODO para hacer una transferencia a la cuenta del profesional
+    //TODO: Generar una orden de retiro para hacer un retiro a la cuenta del usuario
+  }
+
+  async cancelPaymentLink(paymentId: string): Promise<PaymentUpdateResponse> {
+    console.log("🚀 ~ file: mercado-pago.service.ts:50 ~ MercadoPagoService ~ cancelPaymentLink ~ paymentId:", paymentId)
+    console.log(await mercadopago.payment.get(+paymentId));
+    return await mercadopago.payment.cancel(+paymentId);
   }
 }

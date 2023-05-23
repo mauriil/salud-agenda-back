@@ -11,6 +11,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PatientsModule } from './modules/patients/patients.module';
 import { HealthCenterModule } from './modules/health-center/health-center.module';
+import { PatientHistoryModule } from './modules/patient-history/patient-history.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { HealthCenterModule } from './modules/health-center/health-center.module
     AppointmentModule,
     HealthCenterModule,
     PatientsModule,
+    PatientHistoryModule,
   ],
   controllers: [],
   providers: [MyLogger, WhatsappService, Client, MercadoPagoService],

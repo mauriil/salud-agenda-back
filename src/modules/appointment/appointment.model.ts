@@ -51,7 +51,7 @@ export const AppointmentSchema = new mongoose.Schema(
         type: Boolean,
         default: false,
       },
-      paymentId: {
+      mercadoPagoPaymentId: {
         type: String,
       },
       paymentUrl: {

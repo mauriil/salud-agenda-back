@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
@@ -46,7 +47,16 @@ export class AppointmentController {
     @Param('id') id: string,
     @Body() updateAppointmentDto: UpdateAppointmentDto,
   ) {
-    return this.appointmentService.update(+id, updateAppointmentDto);
+    return this.appointmentService.update(id, updateAppointmentDto);
+  }
+
+  @Get('confirm/:id')
+  @ApiOkResponse()
+  confirm(
+    @Param('id') id: string,
+    @Query('payment_id') mercadoPagoPaymentId: string,
+  ) {
+    return this.appointmentService.confirmAppointment(id, mercadoPagoPaymentId);
   }
 
   @Delete(':id')

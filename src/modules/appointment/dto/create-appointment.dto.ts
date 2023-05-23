@@ -43,7 +43,7 @@ export class Payment {
 
   public paymentUrl: string;
 
-  public paymentId: string;
+  public mercadoPagoPaymentId: string;
 }
 export class CreateAppointmentDto {
   @ApiProperty({

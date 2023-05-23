@@ -3,7 +3,7 @@ export interface paymentInterface {
   payToConfirm: boolean;
   hasToPay: string;
   payed: boolean;
-  paymentId: string;
+  mercadoPagoPaymentId: string;
   paymentUrl: string;
 }
 

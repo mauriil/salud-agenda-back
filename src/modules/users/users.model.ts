@@ -19,6 +19,13 @@ export const UserSchema = new mongoose.Schema(
       access_token: String,
       refresh_token: String,
     },
+    bankAccount: [
+      {
+        descriptiveName: String,
+        cbu: String,
+        alias: String,
+      },
+    ],
   },
   { timestamps: true, collection: 'users' },
 )

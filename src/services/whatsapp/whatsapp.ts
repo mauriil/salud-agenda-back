@@ -11,9 +11,10 @@ const client = new Client({
 });
 client.on('qr', (qr) => {
   // TODO: Send QR via email or SMS
-  logger.log(`QR RECEIVED, ${qr}`, 'Main');
+  logger.log(`QR RECEIVED, ${qr}`, 'WhatsappService');
 });
 
 client.initialize();
+logger.log('Whatsapp client initialized', 'WhatsappService');
 
 export default client;

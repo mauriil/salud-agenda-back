@@ -99,7 +99,8 @@ export class AppointmentService {
             );
             newAppointmentObject.payment.paymentUrl =
               MPpaymentLink.body.init_point;
-            newAppointmentObject.payment.paymentId = MPpaymentLink.response.id;
+            newAppointmentObject.payment.mercadoPagoPaymentId =
+              MPpaymentLink.response.id;
             break;
           case 'personal':
             this.whatsappService.sendMessage(
@@ -125,6 +126,21 @@ export class AppointmentService {
     }
   }
 
+  async confirmAppointment(id: string, mercadoPagoPaymentId: string) {
+    try {
+      await this.appointmentModel.findOneAndUpdate(
+        {
+          googleEventId: id,
+        },
+        { $set: { 'payment.payed': true } },
+      );
+      this.mercadoPagoService.cancelPaymentLink(mercadoPagoPaymentId);
+    } catch (error) {
+      this.logger.error(error, 'AppointmentService');
+      throw new HttpException(error, 400);
+    }
+  }
+
   findAll() {
     this.mercadoPagoService.payToUser('123');
     return `This action returns all appointment`;
@@ -134,7 +150,7 @@ export class AppointmentService {
     return `This action returns a #${id} appointment`;
   }
 
-  update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
+  async update(id: string, updateAppointmentDto: UpdateAppointmentDto) {
     return `This action updates a #${id} appointment`;
   }
 
